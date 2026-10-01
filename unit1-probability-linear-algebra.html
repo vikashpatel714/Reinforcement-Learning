@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="ocean">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unit 1: Probability and Linear Algebra for RL</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800&family=Nunito:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#0e1a2b;--card:#16263c;--ink:#e8f1fa;--mut:#9db4cc;--ac:#3dd6c6;--ac2:#ffb347;--line:#2a4160;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+[data-theme=sunrise]{--bg:#fff6ea;--card:#fff;--ink:#3b2417;--mut:#7d5d49;--ac:#e0562b;--ac2:#2b7a78;--line:#f0d9c0}
+[data-theme=forest]{--bg:#10201a;--card:#183228;--ink:#e6f4ea;--mut:#9cc3ad;--ac:#8be28b;--ac2:#f2c14e;--line:#2b5240}
+[data-theme=grape]{--bg:#1d1330;--card:#2a1d45;--ink:#f1e9ff;--mut:#bba8dd;--ac:#c58bff;--ac2:#ffd166;--line:#44306b}
+[data-theme=paper]{--bg:#f7f7f4;--card:#fff;--ink:#1c1c1c;--mut:#595959;--ac:#1b5fd1;--ac2:#c2410c;--line:#dcdcd6}
+[data-theme=rose]{--bg:#2a1220;--card:#3a1b2e;--ink:#ffe9f1;--mut:#d9a6bd;--ac:#ff7aa8;--ac2:#7fe3d0;--line:#5a2c47}
+[data-theme=sand]{--bg:#f3ead7;--card:#fbf6ea;--ink:#2e2a1f;--mut:#6f6650;--ac:#8a5a00;--ac2:#006d77;--line:#decfa8}
+[data-theme=mono]{--bg:#000;--card:#0d0d0d;--ink:#f2f2f2;--mut:#a0a0a0;--ac:#ffe600;--ac2:#00e5ff;--line:#333}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.7 Nunito,system-ui,sans-serif;transition:background .4s,color .4s}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.2}
+header{padding:56px 20px 30px;max-width:980px;margin:auto}
+h1{font-size:clamp(2rem,6vw,3.6rem);margin:.2em 0}
+.hero-anim{display:flex;gap:10px;margin:18px 0}
+.hero-anim i{width:16px;height:16px;border-radius:50%;background:var(--ac);animation:b 1.4s infinite ease-in-out}
+.hero-anim i:nth-child(2n){background:var(--ac2)}
+@keyframes b{50%{transform:translateY(-14px)}}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:8px 14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+nav a{color:var(--mut);text-decoration:none;font-size:14px;padding:4px 8px;border-radius:6px}
+nav a:hover,nav a:focus-visible{color:var(--ink);outline:2px solid var(--ac)}
+.themes{margin-left:auto;display:flex;gap:6px}
+.themes button{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0}
+.themes button:focus-visible{outline:2px solid var(--ac)}
+main{max-width:980px;margin:auto;padding:0 20px 80px}
+section{margin:56px 0;padding-top:10px}
+section>h2{font-size:clamp(1.5rem,4vw,2.2rem);border-bottom:3px solid var(--ac);display:inline-block;padding-bottom:4px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:16px 0}
+.card h3{margin:.1em 0 .4em;color:var(--ac)}
+.eg{border-left:5px solid var(--ac2)}
+.eg h3{color:var(--ac2)}
+.f{font-family:Georgia,serif;font-size:1.15em;background:var(--bg);padding:8px 12px;border-radius:8px;display:block;margin:8px 0;overflow-x:auto}
+.sim{border:2px dashed var(--ac);border-radius:14px;padding:16px;margin:18px 0;background:var(--card)}
+.sim h3{margin-top:0}
+canvas{width:100%;max-width:640px;height:auto;background:var(--bg);border-radius:10px;border:1px solid var(--line);display:block}
+label{display:block;font-size:14px;color:var(--mut);margin-top:8px}
+input[type=range]{width:100%;max-width:360px;accent-color:var(--ac)}
+input[type=number]{width:70px;padding:4px;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:6px}
+.btn{background:var(--ac);color:var(--bg);border:0;border-radius:8px;padding:8px 14px;font:700 15px Nunito;cursor:pointer;margin:8px 6px 4px 0}
+.btn:focus-visible{outline:3px solid var(--ac2)}
+.out{font-weight:700;color:var(--ac2);margin:6px 0}
+details{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:8px 0}
+summary{cursor:pointer;font-weight:700}
+table{border-collapse:collapse;margin:8px 0}td,th{border:1px solid var(--line);padding:4px 10px;text-align:center}
+.wrap{overflow-x:auto}
+footer{text-align:center;color:var(--mut);padding:30px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+<div class="hero-anim" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<p style="color:var(--mut);margin:0">Unit 1 complete notes, by Vikash Patel</p>
+<h1>Probability and Linear Algebra: the Mathematics Behind Reinforcement Learning</h1>
+<p>Start from zero and reach advanced ideas. Every topic has plain explanations, real-life examples, a live simulation, solved numericals and practice questions. Use the colored dots at the top right to switch between 8 themes.</p>
+</header>
+<nav aria-label="Topics">
+<a href="#t1">1 Probability</a><a href="#t2">2 Distributions</a><a href="#t3">3 Bayes</a><a href="#t4">4 Markov</a><a href="#t5">5 Linear algebra</a><a href="#t6">6 Vector spaces</a><a href="#t7">7 Projections</a><a href="#t8">8 Eigen</a>
+<div class="themes" id="themes" role="group" aria-label="Choose theme"></div>
+</nav>
+<main>
+
+<section id="t1"><h2>1. Probability Foundations for RL</h2>
+<div class="card"><h3>Basics</h3>
+<p>Probability measures how likely an event is, on a scale from 0 (impossible) to 1 (certain). The set of all possible outcomes is the <b>sample space</b> S. An <b>event</b> is a subset of S.</p>
+<span class="f">P(A) = favourable outcomes / total outcomes (equally likely case)</span>
+<p><b>Axioms:</b> P(A) ≥ 0; P(S) = 1; for mutually exclusive events P(A ∪ B) = P(A) + P(B).</p>
+<p><b>Useful rules:</b> P(not A) = 1 − P(A); P(A ∪ B) = P(A) + P(B) − P(A ∩ B); conditional probability P(A|B) = P(A ∩ B) / P(B); A and B are independent if P(A ∩ B) = P(A)·P(B).</p>
+<p><b>Expectation</b> is the long-run average: E[X] = Σ x·P(x).</p></div>
+<div class="card eg"><h3>Real-life example</h3><p>A slot machine in an RL "bandit" problem pays ₹10 with probability 0.3 and ₹0 otherwise. Expected reward = 10 × 0.3 = ₹3 per pull. An RL agent must estimate this number by trying the machine repeatedly. Weather forecasts ("70% chance of rain") are also probabilities.</p></div>
+<div class="card"><h3>Why RL needs it</h3><p>Environments are uncertain: the same action can lead to different next states and rewards. RL maximizes <i>expected</i> total reward, so every algorithm is built on probability.</p></div>
+<div class="sim"><h3>Simulation: Law of Large Numbers</h3>
+<p>Flip a coin many times. The running fraction of heads settles near the true probability p.</p>
+<label>True P(heads) = <span id="p1v">0.50</span><input type="range" id="p1" min="0.05" max="0.95" step="0.05" value="0.5"></label>
+<button class="btn" id="f10">Flip 10</button><button class="btn" id="f500">Flip 500</button><button class="btn" id="f0">Reset</button>
+<canvas id="c1" width="640" height="240"></canvas><div class="out" id="o1"></div></div>
+<div class="card"><h3>Numericals</h3>
+<details><summary>Q1. A fair coin is tossed 3 times. Find P(at least one head).</summary>P(no head) = (1/2)³ = 1/8, so P(at least one) = 1 − 1/8 = <b>7/8</b>.</details>
+<details><summary>Q2. A fair die is rolled. Find E[X].</summary>(1+2+3+4+5+6)/6 = <b>3.5</b>.</details>
+<details><summary>Q3. P(A)=0.5, P(B)=0.4, P(A∩B)=0.2. Find P(A|B). Are A and B independent?</summary>P(A|B) = 0.2/0.4 = <b>0.5</b>. Since P(A)P(B) = 0.2 = P(A∩B), they are <b>independent</b>.</details>
+<details><summary>Practice: A bandit arm pays 5 with probability 0.6 and −2 otherwise. Find the expected reward.</summary>5(0.6) + (−2)(0.4) = 3 − 0.8 = <b>2.2</b>.</details></div>
+</section>
+
+<section id="t2"><h2>2. Random Variables and Probability Distributions</h2>
+<div class="card"><h3>Basics</h3>
+<p>A <b>random variable</b> (RV) is a rule that assigns a number to each outcome. Example: X = number of heads in 3 tosses.</p>
+<p><b>Discrete RV:</b> takes countable values; described by a PMF P(X = x). <b>Continuous RV:</b> takes any value in a range; described by a PDF f(x), where probability is the area under the curve and total area = 1.</p>
+<span class="f">E[X] = Σ x·P(x) &nbsp; | &nbsp; Var(X) = E[X²] − (E[X])² &nbsp; | &nbsp; σ = √Var</span>
+<p><b>Bernoulli(p):</b> one trial, success with probability p. Mean p, variance p(1−p).<br>
+<b>Binomial(n, p):</b> number of successes in n independent trials. P(X=k) = C(n,k) pᵏ (1−p)ⁿ⁻ᵏ. Mean np, variance np(1−p).<br>
+<b>Normal(μ, σ²):</b> the bell curve. About 68% of values lie within 1σ of the mean and 95% within 2σ.</p></div>
+<div class="card eg"><h3>Real-life example</h3><p>A factory makes bulbs and 5% are defective. In a box of 10, the number of defective bulbs is Binomial(10, 0.05). Heights of students follow a roughly normal curve. In RL, policies output a probability distribution over actions, such as a Normal distribution for a robot's steering angle.</p></div>
+<div class="sim"><h3>Simulation: Binomial distribution</h3>
+<label>Trials n = <span id="nv">10</span><input type="range" id="n2" min="1" max="40" value="10"></label>
+<label>Success probability p = <span id="p2v">0.50</span><input type="range" id="p2" min="0.05" max="0.95" step="0.05" value="0.5"></label>
+<canvas id="c2" width="640" height="240"></canvas><div class="out" id="o2"></div></div>
+<div class="card"><h3>Numericals</h3>
+<details><summary>Q1. X ~ Binomial(5, 0.5). Find P(X=2).</summary>C(5,2)(0.5)²(0.5)³ = 10/32 = <b>0.3125</b>.</details>
+<details><summary>Q2. X ~ Binomial(20, 0.1). Find mean and variance.</summary>Mean = 20(0.1) = <b>2</b>. Variance = 20(0.1)(0.9) = <b>1.8</b>.</details>
+<details><summary>Q3. Test marks are Normal with μ=60, σ=10. Roughly what percent score between 50 and 70?</summary>That is μ ± 1σ, so about <b>68%</b>.</details>
+<details><summary>Practice: P(X=0)=0.2, P(1)=0.5, P(2)=0.3. Find E[X] and Var(X).</summary>E = 0.5 + 0.6 = <b>1.1</b>. E[X²] = 0.5 + 1.2 = 1.7. Var = 1.7 − 1.21 = <b>0.49</b>.</details></div>
+</section>
+
+<section id="t3"><h2>3. Bayes' Rule and Inference</h2>
+<div class="card"><h3>Basics</h3>
+<p>Bayes' rule updates a belief after seeing evidence. You start with a <b>prior</b>, observe data, and get a <b>posterior</b>.</p>
+<span class="f">P(H|E) = P(E|H) · P(H) / P(E), where P(E) = P(E|H)P(H) + P(E|not H)P(not H)</span>
+<p>H is the hypothesis, E is the evidence. P(E|H) is the <b>likelihood</b>. Inference means drawing conclusions about hidden quantities from observed data.</p></div>
+<div class="card eg"><h3>Real-life example</h3><p>A disease affects 1% of people. A test detects it 90% of the time when present, but also gives a false alarm for 9% of healthy people. If you test positive, the chance you are actually ill is only about 9%, because healthy people vastly outnumber sick people. In RL, an agent uses the same idea to guess its hidden state from noisy sensors (belief state in POMDPs, Kalman filters).</p></div>
+<div class="sim"><h3>Simulation: Medical test</h3>
+<label>Prior (disease rate) <span id="a3v">1</span>%<input type="range" id="a3" min="1" max="50" value="1"></label>
+<label>Sensitivity <span id="b3v">90</span>%<input type="range" id="b3" min="50" max="100" value="90"></label>
+<label>False positive rate <span id="c3v">9</span>%<input type="range" id="c3" min="0" max="30" value="9"></label>
+<canvas id="c3" width="640" height="120"></canvas><div class="out" id="o3"></div></div>
+<div class="card"><h3>Numericals</h3>
+<details><summary>Q1. Use the numbers above (1%, 90%, 9%). Find P(ill | positive).</summary>P(E) = 0.9(0.01) + 0.09(0.99) = 0.009 + 0.0891 = 0.0981. Posterior = 0.009/0.0981 ≈ <b>0.092 (9.2%)</b>.</details>
+<details><summary>Q2. Machine A makes 60% of items, B makes 40%. Defect rates 2% and 5%. A random item is defective. Find P(from B).</summary>P(D) = 0.6(0.02) + 0.4(0.05) = 0.032. P(B|D) = 0.02/0.032 = <b>0.625</b>.</details>
+<details><summary>Practice: Email spam rate is 30%. The word "free" appears in 60% of spam and 10% of normal mail. Find P(spam | "free").</summary>Numerator 0.6(0.3) = 0.18. P(E) = 0.18 + 0.1(0.7) = 0.25. Answer = <b>0.72</b>.</details></div>
+</section>
+
+<section id="t4"><h2>4. Stochastic Processes and Markov Chains</h2>
+<div class="card"><h3>Basics</h3>
+<p>A <b>stochastic process</b> is a sequence of random variables over time. A <b>Markov chain</b> is a process where the next state depends only on the current state (the <b>Markov property</b>): P(Sₜ₊₁ | Sₜ, Sₜ₋₁, …) = P(Sₜ₊₁ | Sₜ).</p>
+<p>The <b>transition matrix</b> P has entries Pᵢⱼ = P(next = j | now = i); each row sums to 1. If the distribution now is the row vector π, then after one step it is πP, and after n steps πPⁿ.</p>
+<p>The <b>stationary distribution</b> satisfies π = πP. Under mild conditions, the chain converges to it no matter where it starts.</p></div>
+<div class="card eg"><h3>Real-life example</h3><p>Weather: if today is sunny, tomorrow is sunny with probability 0.8. Google PageRank models a person randomly clicking links. In RL, a <b>Markov Decision Process</b> adds actions and rewards to a Markov chain: the next state depends on the current state and the chosen action.</p></div>
+<div class="sim"><h3>Simulation: Sunny/Rainy chain</h3>
+<label>P(Sunny → Sunny) = <span id="a4v">0.80</span><input type="range" id="a4" min="0.05" max="0.95" step="0.05" value="0.8"></label>
+<label>P(Rainy → Sunny) = <span id="b4v">0.40</span><input type="range" id="b4" min="0.05" max="0.95" step="0.05" value="0.4"></label>
+<p style="font-size:14px;color:var(--mut)">The chart shows P(Sunny) over 20 days, starting from a sunny day. It converges to the stationary value.</p>
+<canvas id="c4" width="640" height="240"></canvas><div class="out" id="o4"></div></div>
+<div class="card"><h3>Numericals</h3>
+<details><summary>Q1. P = [[0.8, 0.2],[0.4, 0.6]] (Sunny, Rainy). Today is Sunny. Find P(Sunny) after 2 days.</summary>Day 1: (0.8, 0.2). Day 2 Sunny = 0.8(0.8) + 0.2(0.4) = 0.64 + 0.08 = <b>0.72</b>.</details>
+<details><summary>Q2. Find the stationary distribution for the same P.</summary>Let π = (x, 1−x). x = 0.8x + 0.4(1−x) → 0.6x = 0.4 → x = <b>2/3</b>. So π = (2/3, 1/3).</details>
+<details><summary>Practice: A user switches between App A and B. A→B with 0.3, B→A with 0.6. Find the long-run share of time on A.</summary>x = 0.7x + 0.6(1−x) → 0.9x = 0.6 → x = <b>2/3</b>.</details></div>
+</section>
+
+<section id="t5"><h2>5. Linear Algebra Fundamentals</h2>
+<div class="card"><h3>Basics</h3>
+<p>A <b>vector</b> is an ordered list of numbers, such as v = (3, 4). Geometrically it is an arrow with a length and a direction. A <b>matrix</b> is a rectangular grid of numbers that transforms vectors.</p>
+<p><b>Operations:</b> vector addition (add component-wise); scalar multiplication (stretch or shrink); <b>dot product</b> a·b = a₁b₁ + a₂b₂ + …; matrix times vector: each output entry is a row of the matrix dotted with the vector; matrix product AB needs columns of A = rows of B; <b>transpose</b> Aᵀ swaps rows and columns; identity matrix I leaves vectors unchanged.</p>
+<span class="f">Length |v| = √(v·v) &nbsp; | &nbsp; cos θ = (a·b) / (|a||b|)</span></div>
+<div class="card eg"><h3>Real-life example</h3><p>A movie can be a vector of ratings: (action = 8, comedy = 2, romance = 5). Two movies with a high cosine similarity are alike, which is how recommendation systems work. In RL, a state is usually a feature vector and a neural network layer is a matrix multiplication.</p></div>
+<div class="sim"><h3>Simulation: Dot product and angle</h3>
+<label>a = (<input type="number" id="a1" value="3">, <input type="number" id="a2" value="1">) &nbsp; b = (<input type="number" id="b1" value="1">, <input type="number" id="b2" value="3">)</label>
+<div class="out" id="o5"></div></div>
+<div class="card"><h3>Numericals</h3>
+<details><summary>Q1. a = (1, 2), b = (3, 4). Find a·b.</summary>1(3) + 2(4) = <b>11</b>.</details>
+<details><summary>Q2. A = [[1, 2],[3, 4]], v = (1, 1). Find Av.</summary>(1+2, 3+4) = <b>(3, 7)</b>.</details>
+<details><summary>Practice: Find |(6, 8)| and a unit vector in its direction.</summary>|v| = 10, unit vector = <b>(0.6, 0.8)</b>.</details></div>
+</section>
+
+<section id="t6"><h2>6. Vector Spaces and Inner Products</h2>
+<div class="card"><h3>Basics</h3>
+<p>A <b>vector space</b> is a set of vectors where you can add any two and scale any one, and the result stays inside the set (closure), along with the usual rules (zero vector, additive inverse, associativity, distributivity). Examples: ℝ², ℝ³, all polynomials of degree ≤ 2.</p>
+<p>A <b>subspace</b> is a vector space inside a larger one; it must contain the zero vector. The <b>span</b> of vectors is all their linear combinations. A <b>basis</b> is a minimal set that spans the space; the number of vectors is the <b>dimension</b>.</p>
+<p>An <b>inner product</b> ⟨u, v⟩ generalizes the dot product. It must be symmetric, linear, and positive (⟨v, v⟩ > 0 for v ≠ 0). It gives a <b>norm</b> ‖v‖ = √⟨v, v⟩, distance ‖u − v‖, and a notion of <b>orthogonality</b> (⟨u, v⟩ = 0).</p>
+<span class="f">Cauchy–Schwarz: |⟨u, v⟩| ≤ ‖u‖‖v‖ &nbsp; | &nbsp; Triangle: ‖u + v‖ ≤ ‖u‖ + ‖v‖</span></div>
+<div class="card eg"><h3>Real-life example</h3><p>Colors on a screen live in a 3D vector space (R, G, B): any color is a combination of the three basis colors. A line through the origin in 3D is a subspace, but a line that misses the origin is not. In RL, value functions are often approximated as a combination of basis features, so the value function lives in the span of those features.</p></div>
+<div class="card"><h3>Numericals</h3>
+<details><summary>Q1. Is the line y = 2x a subspace of ℝ²? Is y = 2x + 1?</summary>y = 2x contains (0,0) and is closed under addition and scaling: <b>yes</b>. y = 2x + 1 misses the origin: <b>no</b>.</details>
+<details><summary>Q2. Find the norm of (3, 4) and the angle between (1, 0) and (1, 1).</summary>‖(3,4)‖ = <b>5</b>. cos θ = 1/(1·√2) = 0.707, so θ = <b>45°</b>.</details>
+<details><summary>Practice: Are (2, 3) and (3, −2) orthogonal?</summary>2(3) + 3(−2) = 0, so <b>yes</b>.</details></div>
+</section>
+
+<section id="t7"><h2>7. Linear Independence and Projections</h2>
+<div class="card"><h3>Basics</h3>
+<p>Vectors v₁, …, vₖ are <b>linearly independent</b> if c₁v₁ + … + cₖvₖ = 0 only when all cᵢ = 0. If one vector can be built from the others, they are <b>dependent</b>. In ℝⁿ, more than n vectors are always dependent. For a matrix, <b>rank</b> is the number of independent columns, and for a square matrix, det ≠ 0 means independent columns.</p>
+<p>The <b>projection</b> of b onto a is the part of b that points along a:</p>
+<span class="f">proj_a(b) = (a·b / a·a) · a &nbsp; | &nbsp; error e = b − proj_a(b) is orthogonal to a</span>
+<p>The projection is the closest point to b on the line through a. This is the idea behind <b>least squares</b>: solve AᵀA x = Aᵀb to find the best fit when Ax = b has no exact solution.</p></div>
+<div class="card eg"><h3>Real-life example</h3><p>The shadow of a stick on the ground at noon is its projection onto the ground. Fitting a straight line to noisy data points is a projection of the data vector onto the space of lines. In RL, linear function approximation projects the true value function onto the span of the features.</p></div>
+<div class="sim"><h3>Simulation: Projection of b onto a</h3>
+<label>Angle of a: <span id="a7v">20</span>°<input type="range" id="a7" min="0" max="180" value="20"></label>
+<label>Angle of b: <span id="b7v">70</span>°<input type="range" id="b7" min="0" max="180" value="70"></label>
+<canvas id="c7" width="640" height="300"></canvas><div class="out" id="o7"></div></div>
+<div class="card"><h3>Numericals</h3>
+<details><summary>Q1. Are (1, 2) and (2, 4) independent?</summary>(2, 4) = 2(1, 2), so they are <b>dependent</b>.</details>
+<details><summary>Q2. Project b = (3, 4) onto a = (1, 0).</summary>a·b = 3, a·a = 1, so proj = <b>(3, 0)</b>. Error = (0, 4), orthogonal to a.</details>
+<details><summary>Q3. Project b = (2, 6) onto a = (1, 1).</summary>a·b = 8, a·a = 2, so proj = 4(1, 1) = <b>(4, 4)</b>.</details>
+<details><summary>Practice: Is {(1,0,1), (0,1,1), (1,1,2)} independent?</summary>The third equals the sum of the first two, so it is <b>dependent</b>.</details></div>
+</section>
+
+<section id="t8"><h2>8. Eigenvalues and Spectral Analysis</h2>
+<div class="card"><h3>Basics</h3>
+<p>Most vectors change direction when a matrix acts on them. An <b>eigenvector</b> v keeps its direction and is only scaled by the <b>eigenvalue</b> λ:</p>
+<span class="f">A v = λ v &nbsp;⇒&nbsp; det(A − λI) = 0 (characteristic equation)</span>
+<p>For a 2×2 matrix: λ² − (trace)λ + det = 0. Also, sum of eigenvalues = trace and product = determinant.</p>
+<p><b>Spectral analysis</b> studies the eigenvalues (the spectrum). A symmetric matrix has real eigenvalues and orthogonal eigenvectors, so A = QΛQᵀ (<b>spectral theorem</b>). This leads to PCA, the SVD, and stability analysis. A Markov transition matrix always has eigenvalue 1, and its eigenvector is the stationary distribution. If every |λ| &lt; 1, repeated multiplication shrinks to zero; if some |λ| &gt; 1, it blows up.</p></div>
+<div class="card eg"><h3>Real-life example</h3><p>A swing or bridge has natural frequencies, which are eigenvalues of the system; pushing at that frequency causes resonance. PCA finds the directions along which data varies the most, using eigenvectors of the covariance matrix. In RL, eigenvalues of the transition matrix decide how fast a chain mixes and whether an iterative algorithm converges.</p></div>
+<div class="sim"><h3>Simulation: How a matrix transforms a circle</h3>
+<p style="font-size:14px;color:var(--mut)">The unit circle becomes an ellipse. Highlighted lines are real eigenvector directions.</p>
+<label>A = [[<input type="number" step="0.5" id="m1" value="2">, <input type="number" step="0.5" id="m2" value="1">],[<input type="number" step="0.5" id="m3" value="1">, <input type="number" step="0.5" id="m4" value="2">]]</label>
+<canvas id="c8" width="640" height="300"></canvas><div class="out" id="o8"></div></div>
+<div class="card"><h3>Numericals</h3>
+<details><summary>Q1. Eigenvalues of [[2, 0],[0, 3]].</summary>Diagonal matrix, so <b>λ = 2 and 3</b>.</details>
+<details><summary>Q2. Find eigenvalues and an eigenvector of A = [[4, 1],[2, 3]].</summary>Trace 7, det 10, so λ² − 7λ + 10 = 0, giving <b>λ = 5, 2</b>. For λ = 5: (A − 5I)v = 0 gives −x + y = 0, so <b>v = (1, 1)</b>.</details>
+<details><summary>Practice: A = [[0.8, 0.2],[0.4, 0.6]]. Find the eigenvalues.</summary>Trace 1.4, det 0.4, so λ² − 1.4λ + 0.4 = 0, giving <b>λ = 1 and 0.4</b>. The eigenvalue 1 gives the stationary distribution.</details></div>
+</section>
+</main>
+<footer>Created by Vikash Patel. Keep practicing: change the sliders and predict the result before you look.</footer>
+
+<script>
+const $=id=>document.getElementById(id),V=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const themes={ocean:'#3dd6c6',sunrise:'#e0562b',forest:'#8be28b',grape:'#c58bff',paper:'#1b5fd1',rose:'#ff7aa8',sand:'#8a5a00',mono:'#ffe600'};
+const tb=$('themes');
+for(const t in themes){const b=document.createElement('button');b.style.background=themes[t];b.title=t;b.setAttribute('aria-label','Theme '+t);b.onclick=()=>{document.documentElement.dataset.theme=t;drawAll()};tb.appendChild(b)}
+const cx=id=>{const c=$(id),g=c.getContext('2d');g.clearRect(0,0,c.width,c.height);return[g,c.width,c.height]};
+const num=id=>+$(id).value;
+function axes(g,w,h){g.strokeStyle=V('--line');g.lineWidth=1;g.beginPath();g.moveTo(40,10);g.lineTo(40,h-30);g.lineTo(w-10,h-30);g.stroke();g.fillStyle=V('--mut');g.font='12px sans-serif'}
+// 1 coin
+let flips=[],h1=0;
+function flip(n){const p=num('p1');for(let i=0;i<n;i++){h1+=Math.random()<p?1:0;flips.push(h1/(flips.length+1))}d1()}
+function d1(){$('p1v').textContent=num('p1').toFixed(2);const[g,w,h]=cx('c1');axes(g,w,h);const p=num('p1'),y=v=>10+(h-40)*(1-v);
+g.strokeStyle=V('--ac2');g.setLineDash([6,4]);g.beginPath();g.moveTo(40,y(p));g.lineTo(w-10,y(p));g.stroke();g.setLineDash([]);g.fillText('true p',w-60,y(p)-4);g.fillText('1',28,18);g.fillText('0',28,h-30);
+g.strokeStyle=V('--ac');g.lineWidth=2;g.beginPath();flips.forEach((v,i)=>{const x=40+(w-50)*i/Math.max(flips.length-1,50);i?g.lineTo(x,y(v)):g.moveTo(x,y(v))});g.stroke();
+$('o1').textContent=flips.length?`Flips: ${flips.length}, fraction of heads: ${(h1/flips.length).toFixed(3)}`:'Press a flip button to start.'}
+$('f10').onclick=()=>flip(10);$('f500').onclick=()=>flip(500);$('f0').onclick=()=>{flips=[];h1=0;d1()};$('p1').oninput=()=>{flips=[];h1=0;d1()};
+// 2 binomial
+function C(n,k){let r=1;for(let i=1;i<=k;i++)r*=(n-k+i)/i;return r}
+function d2(){const n=num('n2'),p=num('p2');$('nv').textContent=n;$('p2v').textContent=p.toFixed(2);const[g,w,h]=cx('c2');axes(g,w,h);
+const pm=[...Array(n+1)].map((_,k)=>C(n,k)*p**k*(1-p)**(n-k)),mx=Math.max(...pm),bw=(w-60)/(n+1);
+pm.forEach((v,k)=>{const bh=(h-50)*v/mx;g.fillStyle=V('--ac');g.fillRect(45+k*bw,h-30-bh,bw-2,bh);if(n<=20){g.fillStyle=V('--mut');g.fillText(k,45+k*bw+bw/3,h-14)}});
+$('o2').textContent=`Mean = ${(n*p).toFixed(2)}, Variance = ${(n*p*(1-p)).toFixed(2)}, most likely k = ${pm.indexOf(mx)}`}
+['n2','p2'].forEach(i=>$(i).oninput=d2);
+// 3 bayes
+function d3(){const a=num('a3')/100,s=num('b3')/100,f=num('c3')/100;['a3','b3','c3'].forEach(i=>$(i+'v').textContent=$(i).value);
+const tp=s*a,fp=f*(1-a),post=tp/(tp+fp||1);const[g,w,h]=cx('c3');const T=1000,ill=T*a,tpn=ill*s;
+g.fillStyle=V('--mut');g.font='13px sans-serif';g.fillText('Of 1000 people, those who test positive:',10,18);
+const tot=tpn+T*(1-a)*f,bw=w-20;g.fillStyle=V('--ac');g.fillRect(10,30,bw*tpn/tot,40);g.fillStyle=V('--ac2');g.fillRect(10+bw*tpn/tot,30,bw*(1-tpn/tot),40);
+g.fillStyle=V('--mut');g.fillText(`ill: ${tpn.toFixed(0)}`,10,95);g.fillText(`healthy (false alarms): ${(T*(1-a)*f).toFixed(0)}`,160,95);
+$('o3').textContent=`P(ill | positive) = ${(post*100).toFixed(1)}%`}
+['a3','b3','c3'].forEach(i=>$(i).oninput=d3);
+// 4 markov
+function d4(){const a=num('a4'),b=num('b4');$('a4v').textContent=a.toFixed(2);$('b4v').textContent=b.toFixed(2);const[g,w,h]=cx('c4');axes(g,w,h);
+let s=1;const pts=[s];for(let i=0;i<20;i++){s=s*a+(1-s)*b;pts.push(s)}const st=b/(1-a+b),y=v=>10+(h-40)*(1-v);
+g.strokeStyle=V('--ac2');g.setLineDash([6,4]);g.beginPath();g.moveTo(40,y(st));g.lineTo(w-10,y(st));g.stroke();g.setLineDash([]);
+g.strokeStyle=V('--ac');g.fillStyle=V('--ac');g.lineWidth=2;g.beginPath();pts.forEach((v,i)=>{const x=40+(w-50)*i/20;i?g.lineTo(x,y(v)):g.moveTo(x,y(v))});g.stroke();
+pts.forEach((v,i)=>{g.beginPath();g.arc(40+(w-50)*i/20,y(v),3,0,7);g.fill()});
+$('o4').textContent=`Stationary P(Sunny) = b/(1−a+b) = ${st.toFixed(3)}; after 20 days: ${pts[20].toFixed(3)}`}
+['a4','b4'].forEach(i=>$(i).oninput=d4);
+// 5 dot
+function d5(){const a=[num('a1'),num('a2')],b=[num('b1'),num('b2')],d=a[0]*b[0]+a[1]*b[1],na=Math.hypot(...a),nb=Math.hypot(...b),c=d/(na*nb||1);
+$('o5').innerHTML=`a·b = ${d}<br>|a| = ${na.toFixed(3)}, |b| = ${nb.toFixed(3)}<br>cos θ = ${c.toFixed(3)}, θ = ${(Math.acos(Math.max(-1,Math.min(1,c)))*180/Math.PI).toFixed(1)}°${d==0?' (orthogonal)':''}`}
+['a1','a2','b1','b2'].forEach(i=>$(i).oninput=d5);
+// arrows
+function arrow(g,x0,y0,x1,y1,col,lab){g.strokeStyle=g.fillStyle=col;g.lineWidth=2.5;g.beginPath();g.moveTo(x0,y0);g.lineTo(x1,y1);g.stroke();const t=Math.atan2(y1-y0,x1-x0);g.beginPath();g.moveTo(x1,y1);g.lineTo(x1-10*Math.cos(t-.4),y1-10*Math.sin(t-.4));g.lineTo(x1-10*Math.cos(t+.4),y1-10*Math.sin(t+.4));g.fill();if(lab){g.font='bold 14px sans-serif';g.fillText(lab,x1+6,y1-6)}}
+// 7 projection
+function d7(){const A=num('a7')*Math.PI/180,B=num('b7')*Math.PI/180;$('a7v').textContent=$('a7').value;$('b7v').textContent=$('b7').value;
+const[g,w,h]=cx('c7');const ox=w/2,oy=h-30,L=200,a=[Math.cos(A),Math.sin(A)],b=[Math.cos(B)*1.2,Math.sin(B)*1.2],k=a[0]*b[0]+a[1]*b[1],p=[k*a[0],k*a[1]];
+const X=v=>ox+v*L,Y=v=>oy-v*L;g.strokeStyle=V('--line');g.beginPath();g.moveTo(10,oy);g.lineTo(w-10,oy);g.stroke();
+g.setLineDash([5,4]);g.strokeStyle=V('--mut');g.beginPath();g.moveTo(X(b[0]),Y(b[1]));g.lineTo(X(p[0]),Y(p[1]));g.stroke();g.setLineDash([]);
+arrow(g,ox,oy,X(a[0]),Y(a[1]),V('--ac'),'a');arrow(g,ox,oy,X(b[0]),Y(b[1]),V('--ac2'),'b');
+g.strokeStyle=g.fillStyle=V('--ink');g.lineWidth=5;g.beginPath();g.moveTo(ox,oy);g.lineTo(X(p[0]),Y(p[1]));g.stroke();
+$('o7').textContent=`proj = (a·b/a·a)a, scalar = ${k.toFixed(3)}. Error length = ${Math.hypot(b[0]-p[0],b[1]-p[1]).toFixed(3)} (smallest when the dashed line meets a at 90°)`}
+['a7','b7'].forEach(i=>$(i).oninput=d7);
+// 8 eigen
+function d8(){const m=[num('m1'),num('m2'),num('m3'),num('m4')],[a,b,c,d]=m,[g,w,h]=cx('c8'),ox=w/2,oy=h/2,S=55;
+const tr=a+d,dt=a*d-b*c,disc=tr*tr/4-dt;g.strokeStyle=V('--line');g.beginPath();g.moveTo(0,oy);g.lineTo(w,oy);g.moveTo(ox,0);g.lineTo(ox,h);g.stroke();
+g.strokeStyle=V('--mut');g.setLineDash([4,4]);g.beginPath();g.arc(ox,oy,S,0,7);g.stroke();g.setLineDash([]);
+g.strokeStyle=V('--ac');g.lineWidth=2.5;g.beginPath();for(let i=0;i<=100;i++){const t=i/100*2*Math.PI,x=Math.cos(t),y=Math.sin(t),X=ox+S*(a*x+b*y),Y=oy-S*(c*x+d*y);i?g.lineTo(X,Y):g.moveTo(X,Y)}g.stroke();
+let msg=`trace = ${tr}, det = ${dt}. `;
+if(disc>=0){const l=[tr/2+Math.sqrt(disc),tr/2-Math.sqrt(disc)];l.forEach((x,i)=>{let v=Math.abs(b)>1e-9?[b,x-a]:Math.abs(c)>1e-9?[x-d,c]:i?[0,1]:[1,0];const n=Math.hypot(...v)||1;v=[v[0]/n,v[1]/n];arrow(g,ox-v[0]*S*3,oy+v[1]*S*3,ox+v[0]*S*3,oy-v[1]*S*3,i?V('--ink'):V('--ac2'))});
+msg+=`Eigenvalues: λ₁ = ${l[0].toFixed(3)}, λ₂ = ${l[1].toFixed(3)}`}else msg+=`Complex eigenvalues (${(tr/2).toFixed(2)} ± ${Math.sqrt(-disc).toFixed(2)}i): the matrix rotates, so no real eigenvector line exists.`;
+$('o8').textContent=msg}
+['m1','m2','m3','m4'].forEach(i=>$(i).oninput=d8);
+function drawAll(){d1();d2();d3();d4();d5();d7();d8()}
+drawAll();
+</script>
+</body>
+</html>
